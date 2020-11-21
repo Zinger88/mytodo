@@ -1,6 +1,32 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import { Item } from './components/Item';
 
 export const App = function() {
+    const inputEl = useRef(null);
+
+    const [todoList, setTodoList] = useState([{id: 1, text: 'Задача 1'},{id: 2, text: 'Задача 2'}]);
+
+    const addItem = () => {
+        const inputRef = inputEl.current;
+        const resultArray = [...todoList, {id: Math.floor(Math.random() * 1000), text: inputRef.value}];
+        inputRef.value = '';
+        setTodoList(resultArray);
+    }
+
+    const setText = (id, text = 'changed text') => {
+        todoList.forEach(el => {
+            if(el.id === id) {
+                el.text = text;
+            }
+        });
+        setTodoList(todoList);
+    }
+
+    const removeItem = (id = 1) => {
+        const resultArray = todoList.filter(i => i.id !== id);
+        setTodoList(resultArray);
+    }
+
     return (
         <>
             <header>
@@ -8,21 +34,22 @@ export const App = function() {
             </header>
             <main>
                 <ul>
-                    <li id="task_0">
-                        <span>
-                            Текст задачи
-                        </span>
-                        <button>Edit</button>
-                        <button>x</button>
-                    </li>
+                    {todoList.map(item => {
+                        return <Item
+                                    key={item.id}
+                                    id={item.id}
+                                    text={item.text}
+                                    removeItem={removeItem}
+                                    setText={setText}
+                                />
+                    })}
                 </ul>
             </main>
             <div className="createTaskBlock">
                 <div className="createTaskBlock-input">
-                    <input type="text" placeholder="Write Text Here"/>
+                    <input type="text" ref={inputEl} placeholder="Write Text Here"/>
                 </div>
-                
-                <button>Add task</button>
+                <button onClick={addItem}>Add task</button>
             </div>
         </>
     )
