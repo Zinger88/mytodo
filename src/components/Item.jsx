@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-let trottling = true; // temporary solution. Have been written at night
-
 export const Item = (props) => {
     const [text, changeText] = useState(props.text);
+    const [editing, setEditing] = useState(false);
 
     const removeItemHandler = () => {
         props.removeItem(props.id);
@@ -11,16 +10,10 @@ export const Item = (props) => {
 
     const changeInput = (event) => {
         changeText(event.target.value);
-        if(trottling) {
-            trottling = false;
-            setTimeout(() => {
-                setText();
-                trottling = true;
-            }, 1000);
-        }
     }
 
     const setText = () => {
+        setEditing(false);
         props.setText(props.id, text);
     }
 
@@ -29,7 +22,19 @@ export const Item = (props) => {
             <input
                 value={text}
                 onChange={changeInput}
+                className="item-edit-text"
+                onKeyPress={(e)=> {if(e.key === 'Enter') setText()}}
+                style={{
+                    display: editing ? 'block' : 'none'
+                }}
             />
+            <div
+                style={{display: editing ? 'none' : 'block'}}
+                className="item-text"
+                onClick={() => {setEditing(true)}}
+            >
+                    {text}
+            </div>
             <button onClick={removeItemHandler}>x</button>
         </li>
     )

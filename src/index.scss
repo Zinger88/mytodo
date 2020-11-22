@@ -65,14 +65,22 @@ main {
     }
 }
 
-.item input {
-    background: none;
-    border: none;
-    border-bottom: 1px solid #c2c2c2;
-    font-style: italic;
-    font-size: 16px;
-    outline: none;
+.item {
+    &-text {
+        flex: 1 1;
+        min-height: 20px;
+    }
+    &-edit-text {
+        background: none;
+        border: none;
+        border-bottom: 1px solid #c2c2c2;
+        font-style: italic;
+        font-size: 16px;
+        outline: none;
+        flex: 1 1;
+    }
 }
+
 
 .createTaskBlock {
     background: linear-gradient(to right, #e66465, #9198e5);

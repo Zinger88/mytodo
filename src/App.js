@@ -1,56 +1,95 @@
 import React, { useState, useRef } from 'react';
 import { Item } from './components/Item';
+import firebase from 'firebase/app';
+import 'firebase/firebase-firestore';
+import 'firebase/auth';
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
+firebase.initializeApp({
+    apiKey: "AIzaSyBGP7tMrPGmGtb9HCQvztkOtIzM4w9zFs4",
+    authDomain: "todo-desktop-dbc2d.firebaseapp.com",
+    databaseURL: "https://todo-desktop-dbc2d.firebaseio.com",
+    projectId: "todo-desktop-dbc2d",
+    storageBucket: "todo-desktop-dbc2d.appspot.com",
+    messagingSenderId: "909466469260",
+    appId: "1:909466469260:web:eef9dbb1a8895044c30ca9",
+    measurementId: "G-E1E8L5ERRC"
+});
+
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
 
 export const App = function() {
     const inputEl = useRef(null);
-
-    const [todoList, setTodoList] = useState([{id: 1, text: 'Задача 1'},{id: 2, text: 'Задача 2'}]);
+    const todoFirebase = firestore.collection('todolist');
+    const [todoFirebaseTodos] = useCollectionData(todoFirebase, {idField: 'id'});
 
     const addItem = () => {
         const inputRef = inputEl.current;
-        const resultArray = [...todoList, {id: Math.floor(Math.random() * 1000), text: inputRef.value}];
+        todoFirebase.add({
+            text: inputRef.value
+        });
         inputRef.value = '';
-        setTodoList(resultArray);
     }
 
     const setText = (id, text = 'changed text') => {
-        todoList.forEach(el => {
-            if(el.id === id) {
-                el.text = text;
-            }
-        });
-        setTodoList(todoList);
+        todoFirebase.doc(id).update({
+            text: text
+        })
     }
 
     const removeItem = (id = 1) => {
-        const resultArray = todoList.filter(i => i.id !== id);
-        setTodoList(resultArray);
+        todoFirebase.doc(id).delete();
+    }
+
+    const [user] = useAuthState(auth);
+
+    const signInWithGoogle = () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider);
     }
 
     return (
         <>
-            <header>
-                TODO LIST FOR TODAY
-            </header>
-            <main>
-                <ul>
-                    {todoList.map(item => {
-                        return <Item
-                                    key={item.id}
-                                    id={item.id}
-                                    text={item.text}
-                                    removeItem={removeItem}
-                                    setText={setText}
-                                />
-                    })}
-                </ul>
-            </main>
-            <div className="createTaskBlock">
-                <div className="createTaskBlock-input">
-                    <input type="text" ref={inputEl} placeholder="Write Text Here"/>
+            {/*user*/ true ?
+            <>
+                <header>
+                    My Planes
+                </header>
+                <main>
+                    <ul>
+                        {todoFirebaseTodos ? todoFirebaseTodos.map(item => {
+                            return <Item
+                                        key={item.id}
+                                        id={item.id}
+                                        text={item.text}
+                                        removeItem={removeItem}
+                                        setText={setText}
+                                    />
+                        }) : <li>'Loading ...'</li>}
+                    </ul>
+                </main>
+                <div className="createTaskBlock">
+                    <div className="createTaskBlock-input">
+                        <input
+                            type="text"
+                            ref={inputEl}
+                            placeholder="Write Text Here"
+                            onKeyPress={(e)=> {if(e.key === 'Enter') addItem()}}
+                        />
+                    </div>
+                    <button onClick={addItem}>Add task</button>
                 </div>
-                <button onClick={addItem}>Add task</button>
-            </div>
+            </> :
+            <>
+                Autification
+                <button onClick={signInWithGoogle}>Sign in with Google</button>
+                <button onClick={() => auth.signOut()}>Sign Out</button>
+            </>
+            }
         </>
     )
 }
