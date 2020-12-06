@@ -30,7 +30,8 @@ export const App = function() {
     const addItem = () => {
         const inputRef = inputEl.current;
         todoFirebase.add({
-            text: inputRef.value
+            text: inputRef.value,
+            isDone: false
         });
         inputRef.value = '';
     }
@@ -38,6 +39,12 @@ export const App = function() {
     const setText = (id, text = 'changed text') => {
         todoFirebase.doc(id).update({
             text: text
+        })
+    }
+
+    const setDoneStatus = (id, isDone) => {
+        todoFirebase.doc(id).update({
+            isDone: isDone
         })
     }
 
@@ -66,8 +73,10 @@ export const App = function() {
                                         key={item.id}
                                         id={item.id}
                                         text={item.text}
+                                        isDone={item.isDone}
                                         removeItem={removeItem}
                                         setText={setText}
+                                        setDoneStatus={setDoneStatus}
                                     />
                         }) : <li>'Loading ...'</li>}
                     </ul>
