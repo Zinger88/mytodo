@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Item } from './components/Item';
+import { Auth } from './components/Auth';
 import firebase from 'firebase/app';
 import 'firebase/firebase-firestore';
 import 'firebase/auth';
@@ -54,14 +55,9 @@ export const App = function() {
 
     const [user] = useAuthState(auth);
 
-    const signInWithGoogle = () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
-    }
-
     return (
         <>
-            {/*user*/ true ?
+            {user ?
             <>
                 <header>
                     My Planes
@@ -91,12 +87,11 @@ export const App = function() {
                         />
                     </div>
                     <button onClick={addItem}>Add task</button>
+                    <button onClick={() => auth.signOut()}>Sign Out</button>
                 </div>
             </> :
             <>
-                Autification
-                <button onClick={signInWithGoogle}>Sign in with Google</button>
-                <button onClick={() => auth.signOut()}>Sign Out</button>
+                <Auth firestore={firestore} auth={auth}/>
             </>
             }
         </>

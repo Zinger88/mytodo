@@ -10,6 +10,8 @@ export const Item = (props) => {
         props.removeItem(props.id);
     }
 
+    const editTime = 3000;
+
     const setDoneStatusHandler = () => {
         setDoneStatus(!isDone);
         props.setDoneStatus(props.id, !isDone);
@@ -22,7 +24,7 @@ export const Item = (props) => {
         }
         setTime(setTimeout(() => {
             setEditing(false);
-        },5000));
+        }, editTime));
     }
 
     const changeInput = (event) => {
@@ -36,7 +38,7 @@ export const Item = (props) => {
             if(text !== props.text) {
                 props.setText(props.id, lastText);
             }
-        },5000));
+        }, editTime));
     }
 
     const setText = () => {
