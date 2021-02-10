@@ -110,25 +110,4 @@ main {
             outline: none;
         }
     }
-
-    button {
-        flex: 0 0 100px;
-        height: 30px;
-        border: none;
-        text-transform: uppercase;
-        font-size: 10px;
-        transition: .3s;
-        box-shadow: 2px 2px 3px #232323;
-
-        &:focus {
-            outline: none;
-        }
-
-        &:hover {
-            background: #333;
-            transition: .3s;
-            color: white;
-            cursor: pointer;
-        }
-    }
 }

@@ -44,12 +44,26 @@ export const Auth = (props) => {
     }
 
     return(
-        <div>
-            AUTH
-            <input ref={email} type="email" placeholder="email"/>
-            <input ref={password} type="password" placeholder="password"/>
-            <button onClick={signIn}>Sign In</button>
-            <button onClick={createAccount}>Create Account</button>
-        </div>
+        <form
+            style={{
+                padding: '20px'
+            }}
+        >
+            <h3>Auth</h3>
+            <div className="input-field">
+                <input autoComplete="on" id="email" ref={email} type="email" placeholder="email"/>
+                <label className="active" htmlFor="email">Введите e-mail</label>
+            </div>
+            <div className="input-field">
+                <input autoComplete="on" className="input-field" id="auth-password" ref={password} type="password" placeholder="password"/>
+                <label className="active" htmlFor="auth-password">Введите пароль</label>
+            </div>
+            
+            
+            <div style={{display: 'flex', justifyContent: 'space-between', paddingTop: '30px'}}>
+                <a onClick={signIn} className="waves-effect waves-light btn-large"><i className="material-icons left">cloud</i>sign in</a>
+                <a onClick={createAccount} className="waves-effect waves-light btn-large">Create Account</a>
+            </div>
+        </form>
     )
 }
