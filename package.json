@@ -4,6 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"My Todo\"",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --config webpack.config.js --watch",
     "start": "electron ."
@@ -35,6 +38,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "electron-packager": "^15.2.0",
     "firebase": "^8.1.1",
     "materialize-css": "^1.0.0-rc.2",
     "react-firebase-hooks": "^2.2.0"

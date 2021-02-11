@@ -28,6 +28,15 @@ header {
     font-family: Helvetica;
     font-weight: normal;
     font-size: 30px;
+    position: relative;
+
+    .user-name {
+        font-size: 10px;
+        color: aquamarine;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
 }
 
 main {

@@ -23,7 +23,7 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 
-export const App: Function = () => {
+export const App: React.FunctionComponent = () => {
     const inputEl = useRef(null);
     const todoFirebase = firestore.collection('todolist');
     const [todoFirebaseTodos] = useCollectionData(todoFirebase, {idField: 'id'});
@@ -37,13 +37,13 @@ export const App: Function = () => {
         inputRef.value = '';
     }
 
-    const setText = (id: any, text = 'changed text') => {
+    const setText = (id: string, text: string = 'changed text') => {
         todoFirebase.doc(id).update({
             text: text
         })
     }
 
-    const setDoneStatus = (id: any, isDone: boolean) => {
+    const setDoneStatus = (id: string, isDone: boolean) => {
         todoFirebase.doc(id).update({
             isDone: isDone
         })
@@ -59,7 +59,7 @@ export const App: Function = () => {
         {user ?
             <>
                 <header>
-                    My Planes
+                    My Planes <span className="user-name">{user.email}</span>
                 </header>
                 <main>
                     <ul>

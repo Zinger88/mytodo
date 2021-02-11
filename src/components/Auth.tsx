@@ -1,6 +1,11 @@
 import React, { useState, useRef } from 'react';
 
-export const Auth = (props) => {
+interface AuthProps {
+    firestore: any,
+    auth: any,
+}
+
+export const Auth: React.FunctionComponent<AuthProps> = (props) => {
     const email = useRef(null);
     const password = useRef(null);
 
@@ -9,38 +14,42 @@ export const Auth = (props) => {
         let currentPassword = password.current.value;
         if(currentPassword.length && currentEmail.length) {
             props.auth.createUserWithEmailAndPassword(currentEmail, currentPassword)
-            .then((user) => {
-                console.log(user);
+            .then((user: any) => {
+                console.log('Sign in ',user);
             })
-            .catch((error) => {
-                var errorCode = error.code;
-                var errorMessage = error.message;
+            .catch((error: any) => {
+                const errorCode = error.code;
                 if(errorCode === 'auth/email-already-in-use') {
                     alert('You already have account! try to sign')
                 }
                 console.log(errorCode)
             });
         } else {
-            alert('Так, тут надо поаккуравтнее');
+            alert('Так, тут надо поаккуратнее');
         }
     }
 
     const signIn = () => {
         let currentEmail = email.current.value;
         let currentPassword = password.current.value;
-        console.log(currentEmail, currentPassword);
         if(currentEmail.length && currentPassword.length) {
             props.auth.signInWithEmailAndPassword(currentEmail, currentPassword)
-            .then((user) => {
+            .then((user: object) => {
                 console.log(user);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 const errorMessage = error.message;
                 alert(errorMessage);
            });
         } else {
             alert('Заполни нормально');
         }
+    }
+    
+    const keyDownHandler = (event: React.KeyboardEvent) => {
+        if(event.code === 'Enter') {
+            signIn();
+        } 
     }
 
     return(
@@ -51,11 +60,25 @@ export const Auth = (props) => {
         >
             <h3>Auth</h3>
             <div className="input-field">
-                <input autoComplete="on" id="email" ref={email} type="email" placeholder="email"/>
+                <input 
+                    autoComplete="on" 
+                    id="email" 
+                    ref={email} 
+                    type="email" 
+                    placeholder="email"
+                    onKeyDown={keyDownHandler}
+                />
                 <label className="active" htmlFor="email">Введите e-mail</label>
             </div>
             <div className="input-field">
-                <input autoComplete="on" className="input-field" id="auth-password" ref={password} type="password" placeholder="password"/>
+                <input 
+                    autoComplete="on" 
+                    className="input-field" 
+                    id="auth-password" 
+                    ref={password} type="password" 
+                    placeholder="password"
+                    onKeyDown={keyDownHandler}
+                />
                 <label className="active" htmlFor="auth-password">Введите пароль</label>
             </div>
             
