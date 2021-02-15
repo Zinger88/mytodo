@@ -24,7 +24,7 @@ const firestore = firebase.firestore();
 export const Root: React.FunctionComponent = () => {
     const [user ,initialising] = useAuthState(auth);
     return (
-        <div className="root">
+        <div className="root-container">
             {initialising && 
                 <span>Spinner</span>
             }

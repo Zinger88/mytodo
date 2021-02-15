@@ -18,6 +18,8 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
             text: inputRef.value,
             isDone: false
         });
+        const message = 'Add new task - ' + inputRef.value; 
+        electron.notificationApi.sendNotification(message);
         inputRef.value = '';
     }
 
@@ -40,12 +42,14 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
     return (
         <>
             <header>
-                My Planes <span className="user-name">{props.user.email}</span>
+                My Planes <i className="fas fa-plane"></i>
+                <span className="user-name">{props.user.email}</span>
+                <a className="sign-out-btn" onClick={() => props.auth.signOut()}>Sign Out</a>
             </header>
             <main>
                 <ul>
                     {todoFirebaseTodos && todoFirebaseTodos.length < 1 &&
-                        <span>'No planes :) Yes, exactly planes'</span>
+                        <span className="no-planes-text">No planes :) Yes, exactly planes</span>
                     }
                     {todoFirebaseTodos ? todoFirebaseTodos.map((item: any) => {
                         return <Item
@@ -71,7 +75,6 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
                     <label htmlFor="title" className="active">Введите название дела</label>
                 </div>
                 <a className="btn waves-effect waves-light" onClick={addItem}>Add task</a>
-                <a className="btn waves-effect waves-light" onClick={() => props.auth.signOut()}>Sign Out</a>
             </div>
         </> 
     )
