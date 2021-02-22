@@ -16,7 +16,8 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
         const inputRef = inputEl.current;
         todoFirebase.add({
             text: inputRef.value,
-            isDone: false
+            isDone: false,
+            date: new Date().getTime()
         });
         const message = 'Add new task - ' + inputRef.value; 
         electron.notificationApi.sendNotification(message);
@@ -42,7 +43,7 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
     return (
         <>
             <header>
-                My Planes <i className="fas fa-plane"></i>
+                My Planes <i className="material-icons planes-icon">airplanemode_active</i>
                 <span className="user-name">{props.user.email}</span>
                 <a className="sign-out-btn" onClick={() => props.auth.signOut()}>Sign Out</a>
             </header>
@@ -50,8 +51,8 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
                 <ul>
                     {todoFirebaseTodos && todoFirebaseTodos.length < 1 &&
                         <span className="no-planes-text">No planes :) Yes, exactly planes</span>
-                    }
-                    {todoFirebaseTodos ? todoFirebaseTodos.map((item: any) => {
+                    {todoFirebaseTodos ? todoFirebaseTodos.sort((a: any,b: any) => a.date - b.date).map((item: any) => {
+                        console.log(item)
                         return <Item
                                     key={item.id}
                                     id={item.id}
@@ -65,17 +66,17 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
                 </ul>
             </main>
             <div className="createTaskBlock">
-                <div className="input-field">
+                <div className="createTaskBlock-input">
+                    <label htmlFor="title">Введите название дела</label>
                     <input
                         type="text"
                         ref={inputEl}
                         id="title"
                         onKeyPress={(e)=> {if(e.key === 'Enter') addItem()}}
                     />
-                    <label htmlFor="title" className="active">Введите название дела</label>
                 </div>
-                <a className="btn waves-effect waves-light" onClick={addItem}>Add task</a>
+                <a className="add-task-btn btn waves-effect waves-light" onClick={addItem}>Add task</a>
             </div>
-        </> 
+        </>
     )
 }

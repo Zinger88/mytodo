@@ -54,6 +54,7 @@ export const Auth: React.FunctionComponent<AuthProps> = (props) => {
 
     return(
         <form
+            className="auth-form"
             style={{
                 padding: '20px'
             }}
