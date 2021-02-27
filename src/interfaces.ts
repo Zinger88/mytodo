@@ -4,13 +4,14 @@ export interface AppProps {
     auth: any
 }
 export interface ItemProps {
-    date: number,
+    date: Date,
     key: string,
     id: string,
     text: string,
     isDone: boolean,
     removeItem(id: string): void,
     setText(id: string, text: string): void,
+    setDate(id: string, date: Date): void,
     setDoneStatus(id: string, isDone: boolean): void
 }
 

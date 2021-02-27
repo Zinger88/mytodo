@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Item } from './components/Item';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 interface AppProps {
@@ -11,7 +11,6 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
     const inputEl = useRef(null);
     const todoFirebase = props.firestore.collection(props.user.email);
     const [todoFirebaseTodos] = useCollectionData(todoFirebase, {idField: 'id'});
-
     const addItem = () => {
         const inputRef = inputEl.current;
         todoFirebase.add({
@@ -30,6 +29,12 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
         })
     }
 
+    const setDate = (id: string, date: Date) => {
+        todoFirebase.doc(id).update({
+            date: date
+        })
+    }
+
     const setDoneStatus = (id: string, isDone: boolean) => {
         todoFirebase.doc(id).update({
             isDone: isDone
@@ -39,6 +44,24 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
     const removeItem = (id: string = '1') => {
         todoFirebase.doc(id).delete();
     }
+
+    useEffect(function(){
+        const checkTaskInterval = setInterval(() => {
+            if(todoFirebaseTodos) {
+                const dateNow = new Date().getTime();
+                todoFirebaseTodos.forEach((item) => {
+                    if(dateNow >= item.date - 60 * 1000 && dateNow < item.date) {
+                        const message = 'Need to do task ' + item.text;
+                        electron.notificationApi.sendNotification(message);
+                    }
+                })
+            }
+        }, 60000);
+
+        // clear interval with unmount function
+        return () => clearInterval(checkTaskInterval);
+
+    }, [todoFirebaseTodos]);
 
     return (
         <>
@@ -50,7 +73,7 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
             <main>
                 <ul>
                     {todoFirebaseTodos && todoFirebaseTodos.length < 1 &&  <span className="no-planes-text">No planes :) Yes, exactly planes</span>}
-                    {todoFirebaseTodos ? todoFirebaseTodos.sort((a: any,b: any) => a.date - b.date).map((item: any) => {
+                    {todoFirebaseTodos ? todoFirebaseTodos.map((item: any) => {
                         return <Item
                                     date={item.date}
                                     key={item.id}
@@ -58,6 +81,7 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
                                     text={item.text}
                                     isDone={item.isDone}
                                     removeItem={removeItem}
+                                    setDate={setDate}
                                     setText={setText}
                                     setDoneStatus={setDoneStatus}
                                 />

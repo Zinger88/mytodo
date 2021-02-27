@@ -55,6 +55,11 @@ export const Item: React.FunctionComponent<ItemProps> = (props) => {
             setText();
         }
     }
+    const handleChangeDate = (date: Date | [Date, Date], event: React.SyntheticEvent<any, Event>): void => {
+        const timeInSeconds = new Date(date).getTime();
+        setStartDate(timeInSeconds);
+        props.setDate(props.id, timeInSeconds);
+    }
 
     return (
         <li id={props.id} className='item' key={props.id}>
@@ -79,7 +84,7 @@ export const Item: React.FunctionComponent<ItemProps> = (props) => {
             </div>
             <DatePicker
                 selected={startDate}
-                onChange={(date: any) => setStartDate(date)}
+                onChange={handleChangeDate}
                 timeInputLabel="Time:"
                 showTimeInput
                 dateFormat="MMMM d, yyyy h:mm aa"
