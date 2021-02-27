@@ -4,6 +4,7 @@ export interface AppProps {
     auth: any
 }
 export interface ItemProps {
+    date: number,
     key: string,
     id: string,
     text: string,

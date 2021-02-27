@@ -11,7 +11,7 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
     const inputEl = useRef(null);
     const todoFirebase = props.firestore.collection(props.user.email);
     const [todoFirebaseTodos] = useCollectionData(todoFirebase, {idField: 'id'});
-    
+
     const addItem = () => {
         const inputRef = inputEl.current;
         todoFirebase.add({
@@ -49,11 +49,10 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
             </header>
             <main>
                 <ul>
-                    {todoFirebaseTodos && todoFirebaseTodos.length < 1 &&
-                        <span className="no-planes-text">No planes :) Yes, exactly planes</span>
+                    {todoFirebaseTodos && todoFirebaseTodos.length < 1 &&  <span className="no-planes-text">No planes :) Yes, exactly planes</span>}
                     {todoFirebaseTodos ? todoFirebaseTodos.sort((a: any,b: any) => a.date - b.date).map((item: any) => {
-                        console.log(item)
                         return <Item
+                                    date={item.date}
                                     key={item.id}
                                     id={item.id}
                                     text={item.text}

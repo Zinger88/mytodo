@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { ItemProps } from '../interfaces';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const Item: React.FunctionComponent<ItemProps> = (props) => {
     const [text, changeText] = useState(props.text);
     const [editing, setEditing] = useState(false);
     const [time, setTime] = useState(0);
+    const [startDate, setStartDate] = useState(props.date);
     const [isDone, setDoneStatus] = useState(props.isDone);
 
     const removeItemHandler = () => {
@@ -74,6 +77,13 @@ export const Item: React.FunctionComponent<ItemProps> = (props) => {
             >
                 {text}
             </div>
+            <DatePicker
+                selected={startDate}
+                onChange={(date: any) => setStartDate(date)}
+                timeInputLabel="Time:"
+                showTimeInput
+                dateFormat="MMMM d, yyyy h:mm aa"
+            />
             <button onClick={setDoneStatusHandler}>✓</button>
             <button onClick={removeItemHandler}>x</button>
         </li>
