@@ -112,7 +112,7 @@ main {
             align-items: center;
             justify-content: space-between;
             padding: 10px;
-            padding-top: 15px;
+            padding-top: 20px;
             font-size: 18px;
             background: rgba(240, 240, 240, 0.3);
             &:nth-child(odd) {
@@ -148,7 +148,7 @@ main {
         flex: 1 1;
         min-height: 20px;
         font-weight: 600;
-        font-size: 16px;
+        font-size: 15px;
     }
     &-edit-text {
         background: none;
@@ -191,7 +191,7 @@ main {
         display: block;
         top: -23px;
         font-size: 15px;
-        left: 0;
+        left: 5px;
         color: white;
     }
 
@@ -217,20 +217,28 @@ main {
     padding-right: 20px;
     line-height: 0;
     position: absolute;
-    top: -1px;
-    left: 0;
+    top: 0px;
+    left: 6px;
     opacity: 0.4;
     .react-datepicker__input-container {
         input {
-            width: 150px !important;
+            width: 200px !important;
             font-weight: bold;
             border: none !important;
             padding: 3px !important;
             height: 17px !important;
-            font-size: 11px !important;
+            font-size: 12px !important;
+            letter-spacing: 1px;
             cursor: pointer;
             text-align: left;
             margin-bottom: 0 !important;
         }
+    }
+}
+
+.react-datepicker__navigation{
+    box-shadow: none !important;
+    &:hover {
+        background-color: transparent !important;
     }
 }

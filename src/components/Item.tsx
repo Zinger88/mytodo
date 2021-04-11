@@ -85,8 +85,8 @@ export const Item: React.FunctionComponent<ItemProps> = (props) => {
             <DatePicker
                 selected={startDate}
                 onChange={handleChangeDate}
-                timeInputLabel="Time:"
-                showTimeInput
+                timeFormat="HH:mm"
+                showTimeSelect
                 dateFormat="MMMM d, yyyy h:mm aa"
             />
             <button onClick={setDoneStatusHandler}>✓</button>

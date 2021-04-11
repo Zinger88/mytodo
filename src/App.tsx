@@ -73,7 +73,7 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
             <main>
                 <ul>
                     {todoFirebaseTodos && todoFirebaseTodos.length < 1 &&  <span className="no-planes-text">No planes :) Yes, exactly planes</span>}
-                    {todoFirebaseTodos ? todoFirebaseTodos.map((item: any) => {
+                    {todoFirebaseTodos ? todoFirebaseTodos.sort((a: any,b: any) =>{return a.date - b.date}).map((item: any) => {
                         return <Item
                                     date={item.date}
                                     key={item.id}
